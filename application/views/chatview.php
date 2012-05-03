@@ -12,27 +12,31 @@ var userid = "<?php echo $userid; ?>";
 <script type="text/javascript">
 $(document).ready( function(){
 
+    //Global Variable used to store chat message
+    var chatmessage = ""; 
+
     //Put Message into database
     function putChatMessage(){
-        //1. Get Chat Message from the page
-        var chatmessage = $("input#chatline").val();
 
-        //2. Make sure chat contains some text
+
+        //1. Make sure chat contains some text
         if (chatmessage == "") return false;
 
-        //3. Post chat message into the database via JQuery AJAX call
+        //2. Post chat message into the database via JQuery AJAX call
         $.post("<?php echo site_url('chat/ajax_call_insertMessage'); ?>", 
         {userid: userid, chatid: chatid, chatmessage: chatmessage},
         function (data){
-            //Clear Chat Field
-            document.getElementById('chatline').value = '';
             getChatMessages(); 
         }, "json");
 
     }
 
     //When user clicks the say it link
-    $("a#sendmessage").click(function(){
+    $("input#sendmessage").click(function(){
+        //1. Get Chat Message from the page
+        chatmessage = $("input#chatline").val();
+        //Clear Input chatline
+        document.getElementById('chatline').value = '';    
         //Post chat message to the database 
         putChatMessage();
         //Stops browser from refreshing
@@ -41,9 +45,16 @@ $(document).ready( function(){
     });
 
     //When user click enter inside the chat line
-    $("#chatline").keyup(function(event){
+    $("#chatline").keydown(function(event){
+        //1. Get Chat Message from the page
+        chatmessage = $("input#chatline").val();
         if(event.keyCode == 13){
-            $("a#sendmessage").click();
+        //Clear Input chatline
+        document.getElementById('chatline').value = '';    
+        //Post chat message to the database 
+        putChatMessage();
+        //Stops browser from refreshing
+        return false;
         }
     });
 
@@ -105,7 +116,7 @@ $(document).ready( function(){
 </div>
 <div id="chatinput">
     <input id="chatline" name="chatline" size="50" type="text" value="" />
-    <a id="sendmessage" href="" >Say It</a>
+    <input type="button" value="Send" id="sendmessage" /> 
 </div>
 </body>
 </html>
