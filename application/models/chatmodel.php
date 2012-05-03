@@ -16,10 +16,17 @@ class Chatmodel extends CI_Model {
         );
         return $this->db->insert('chatmessages', $data);
     }
-    
+
     //Return chat messages from the table
-    public function getChatMessages($chatid) {
-        $query = $this->db->get_where('chatmessages', array('chat_id' =>$chatid));
+    public function getChatMessages($chatid, $messageid) { 
+
+        $queryStr = "SELECT * 
+            FROM  `chatmessages` 
+            WHERE chat_id = ?					
+            AND  message_id > ?
+            ORDER BY  `chatmessages`.`message_id` ASC ";
+
+        $query = $this->db->query($queryStr, array($chatid, $messageid));
         return $query;        
     }
 }
