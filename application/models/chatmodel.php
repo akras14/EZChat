@@ -8,9 +8,9 @@ class Chatmodel extends CI_Model {
     }
 
     //Insert chat message into table
-    public function addChatMessage($userid, $chatid, $messagecontent){
+    public function addChatMessage($username, $chatid, $messagecontent){
         $data = array ( 
-            'user_id' => $userid,
+            'user_name' => $username,
             'chat_id' => $chatid,
             'message_content' => $messagecontent
         );

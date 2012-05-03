@@ -23,8 +23,12 @@ class Chat extends CI_Controller {
         //3. Get ID for the last Row
         $lastRow = $allMessages->row((int)$numberRows - 1);
         //4. Store that ID in user session
-        $this->session->set_userdata('lastMessageBeforeUser', $lastRow->message_id);
-        //*******Now lastMessageBeforeUser points to first message that the user should see
+        //Check to make sure database is not empty
+        if ($lastRow != NULL) 
+            $this->session->set_userdata('lastMessageToPost', $lastRow->message_id);
+        else
+            $this->session->set_userdata('lastMessageToPost', 0);          
+        //*******Now lastMessageToPost points to first message that the user should see
 
         //Load Default View
         $this->load->view('chatview', $data);
@@ -32,32 +36,42 @@ class Chat extends CI_Controller {
 
     //Gets Called by Ajax Request to insert message
     public function ajax_call_insertMessage(){
-        $userid = $this->input->post('userid');
+        $username = $this->input->post('username');
         $chatid = $this->input->post('chatid');
         $chatmessage = $this->input->post('chatmessage');
-        $this->chatmodel->addChatMessage($userid, $chatid, $chatmessage); 
+        $this->chatmodel->addChatMessage($username, $chatid, $chatmessage); 
+        echo json_encode("Insert Complete"); //Let front end know that the function was sucessful
     }
 
     //Gets Called by Ajax Request to Return all Messages for thsi Chat id
     public function ajax_call_getMessages(){	
         //Get ChatID and Last Message ID before user joined
         $chatid = $this->input->post('chatid');
-        $lastMessageBefore = $this->session->userdata('lastMessageBeforeUser');
+        $lastMessageToPost = $this->session->userdata('lastMessageToPost');
+        //echo "In ajax call and lastMessageToPost is " . $lastMessageToPost;
 
         //Access database to see if any new messages are posted
-        $chatmessages = $this->chatmodel->getChatMessages($chatid, $lastMessageBefore);
+        $chatmessages = $this->chatmodel->getChatMessages($chatid, $lastMessageToPost);
+
 
         //If querry return any new results
         if ($chatmessages->num_rows() > 0)
         {
+            //1. Update Last Message that was posted
+            $numRows = $chatmessages->num_rows(); 
+            $lastRow = $chatmessages->row((int)$numRows - 1);
+
+            $this->session->set_userdata('lastMessageToPost', $lastRow->message_id);
+
+            //2. Get All of New Messages to Post
             $chathtml ='';
             foreach( $chatmessages->result() as $chatmessage)
             {
-                $chathtml .= $chatmessage->message_content . '<br />'; 
-
+                $chathtml .= '&#60;'. $chatmessage->user_name. '&#62; ' . $chatmessage->message_content . '<br />'; 
             }
 
             $result = array('status' => 'ok', 'content' => $chathtml);
+
 
         } else { //No New Results
             $result = array('status' => 'No New Messages', 'content' => '');

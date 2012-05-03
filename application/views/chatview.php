@@ -1,35 +1,93 @@
 <html>
 <head>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-<script scr="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css">
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
 <script type="text/javascript">
 
 var chatid = "<?php echo $chatid; ?>";
-var userid = "<?php echo $userid; ?>";
+var username; 
 
 </script>
 
 <script type="text/javascript">
 $(document).ready( function(){
+    //Select Username Field
+
+    function getUsername(){
+        username = document.getElementById('username').value;
+        $dialog.dialog('close');
+        $("#chatline").select();
+    }
+
+    //Prompt user to enter a username
+    var $dialog = $('<div></div>')
+        .html('<input id="username" type="text" value="Guest" /><br />')
+        .dialog({
+            autoOpen: false,
+                title: 'Select Nickname',
+                resizable: false,
+                open: function() {
+                    $("input#username").select();
+                    $("#username").keydown(function(event){
+                        if(event.keyCode == 13){
+                            getUsername();
+                        }
+                    })
+                },
+                modal: true,
+                buttons: {
+                    Ok: function() { getUsername();} 
+                }
+        });
+
+    $dialog.dialog('open');
+
 
     //Global Variable used to store chat message
-    var chatmessage = ""; 
+    var chatmessage = "";
+    //Global Variable used to store new chat's returned from server
+    var oldDataContent = "";
+
+    //Get chat messages from database
+    function getChatMessages(){
+        $.post("<?php echo site_url('chat/ajax_call_getMessages'); ?>", {chatid: chatid},
+            function (data){
+
+                //Check to see if data was received okay
+                if (data.status == 'ok')
+                {
+                    //Make sure that server did not send same request twice
+                    if (data.content != oldDataContent){
+                        oldDataContent = data.content;
+                        //Post the datat to the screen
+                        //1. Get chatwindow element
+                        var chatwindow = document.getElementById('chatwindow');
+                        //2. Save Current Messages
+                        var currentMessages = $(chatwindow).html();
+                        //3. Add new Messages
+                        $(chatwindow).html(currentMessages +  data.content);
+                        scrollDown();
+                    } //Else no changes have been made
+                }
+            }, "json");
+    }
+
 
     //Put Message into database
     function putChatMessage(){
-
 
         //1. Make sure chat contains some text
         if (chatmessage == "") return false;
 
         //2. Post chat message into the database via JQuery AJAX call
         $.post("<?php echo site_url('chat/ajax_call_insertMessage'); ?>", 
-        {userid: userid, chatid: chatid, chatmessage: chatmessage},
+        {username: username, chatid: chatid, chatmessage: chatmessage},
         function (data){
-            getChatMessages(); 
+            //Update Messages
+            getChatMessages();
         }, "json");
-
     }
 
     //When user clicks the say it link
@@ -50,12 +108,12 @@ $(document).ready( function(){
         //1. Get Chat Message from the page
         chatmessage = $("input#chatline").val();
         if(event.keyCode == 13){
-        //Clear Input chatline
-        document.getElementById('chatline').value = '';    
-        //Post chat message to the database 
-        putChatMessage();
-        //Stops browser from refreshing
-        return false;
+            //Clear Input chatline
+            document.getElementById('chatline').value = '';    
+            //Post chat message to the database 
+            putChatMessage();
+            //Stops browser from refreshing
+            return false;
         }
     });
 
@@ -65,31 +123,7 @@ $(document).ready( function(){
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
-    //Get chat messages from database
-    function getChatMessages(){
-        $.post("<?php echo site_url('chat/ajax_call_getMessages'); ?>", {chatid: chatid},
-            function (data){
-
-                //Check to see if data was received okay
-                if (data.status == 'ok')
-                {
-                    //Post the datat to the screen
-                    //1. Get chatwindow element
-                    var chatwindow = document.getElementById('chatwindow');
-                    //2. Save Current Messages
-                    //var currentMessages = chatwindow.html();
-                    //3. Add new Messages
-                    //chatwindow.html(currentMessages + data.content);
-                    $(chatwindow).html(data.content);
-                    scrollDown();
-                }
-            }, "json");
-    }
-
-    //1. Check for messages as soon as window loads
-    getChatMessages();
-    
-    //2. Continue to check for new messages every second
+    //1. Continue to check for new messages every second
     window.setInterval(function(){
         getChatMessages();
     }, 1000);
@@ -108,6 +142,11 @@ $(document).ready( function(){
 
 #chatinput {
     margin-top: 10px;
+}
+
+/*Hides close button on popup dialog*/
+.ui-dialog-titlebar-close{
+    display: none;
 }
 </style>
 </head>
