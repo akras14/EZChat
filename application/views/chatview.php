@@ -45,9 +45,6 @@ $(document).ready( function(){
     $dialog.dialog('open');
 
 
-    //Global Variable used to store chat message
-    var chatmessage = "";
-
     //Get chat messages from database
     function getChatMessages(){
         $.post("<?php echo site_url('chat/ajax_call_getMessages'); ?>", {chatid: chatid},
@@ -56,13 +53,8 @@ $(document).ready( function(){
                 //Check to see if data was received okay
                 if (data.status == 'ok')
                 {
-                    //Post the datat to the screen
-                    //1. Get chatwindow element
-                    var chatwindow = document.getElementById('chatwindow');
-                    //2. Save Current Messages
-                    var currentMessages = $(chatwindow).html();
-                    //3. Add new Messages
-                    $(chatwindow).html(currentMessages +  data.content);
+                    //Add new Messages
+                    $(chatwindow).html(data.content);
                     scrollDown();
                 }
             }, "json");
@@ -119,7 +111,7 @@ $(document).ready( function(){
 
     window.setInterval(function(){
         getChatMessages();
-    }, 1000);
+    }, 2000);
 
 
 });

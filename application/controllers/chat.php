@@ -53,19 +53,17 @@ class Chat extends CI_Controller {
 
         //Access database to see if any new messages are posted
         $chatmessages = $this->chatmodel->getChatMessages($chatid, $lastMessageToPost);
-
+/*
         //Get Last Row for returned query
         $numRows = $chatmessages->num_rows(); 
         $lastRow = $chatmessages->row((int)$numRows - 1);
 //        echo "lasrRow is " . $lastRow->message_id . "Last to Post is " . $lastMessageToPost;
+         */
 
         //If querry return any new results and lastRow ID is Greater Previous Post ID
-        if ($chatmessages->num_rows() > 0 && $lastRow->message_id > $lastMessageToPost)
+        if ($chatmessages->num_rows() > 0 )
         {
-            //1. Updat Last Message ID to Post for the user
-            $this->session->set_userdata('lastMessageToPost', $lastRow->message_id);
-            
-            //2. Get All of New Messages to Post
+            //Get All of New Messages to Post
             $chathtml ='';
             foreach( $chatmessages->result() as $chatmessage)
             {
