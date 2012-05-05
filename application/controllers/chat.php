@@ -45,24 +45,26 @@ class Chat extends CI_Controller {
 
     //Gets Called by Ajax Request to Return all Messages for thsi Chat id
     public function ajax_call_getMessages(){	
-        //Get ChatID and Last Message ID before user joined
+        //Get ChatID 
         $chatid = $this->input->post('chatid');
+
+        //Get Last Message ID to Post for this user
         $lastMessageToPost = $this->session->userdata('lastMessageToPost');
-        //echo "In ajax call and lastMessageToPost is " . $lastMessageToPost;
 
         //Access database to see if any new messages are posted
         $chatmessages = $this->chatmodel->getChatMessages($chatid, $lastMessageToPost);
 
+        //Get Last Row for returned query
+        $numRows = $chatmessages->num_rows(); 
+        $lastRow = $chatmessages->row((int)$numRows - 1);
+//        echo "lasrRow is " . $lastRow->message_id . "Last to Post is " . $lastMessageToPost;
 
-        //If querry return any new results
-        if ($chatmessages->num_rows() > 0)
+        //If querry return any new results and lastRow ID is Greater Previous Post ID
+        if ($chatmessages->num_rows() > 0 && $lastRow->message_id > $lastMessageToPost)
         {
-            //1. Update Last Message that was posted
-            $numRows = $chatmessages->num_rows(); 
-            $lastRow = $chatmessages->row((int)$numRows - 1);
-
+            //1. Updat Last Message ID to Post for the user
             $this->session->set_userdata('lastMessageToPost', $lastRow->message_id);
-
+            
             //2. Get All of New Messages to Post
             $chathtml ='';
             foreach( $chatmessages->result() as $chatmessage)

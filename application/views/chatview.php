@@ -47,8 +47,6 @@ $(document).ready( function(){
 
     //Global Variable used to store chat message
     var chatmessage = "";
-    //Global Variable used to store new chat's returned from server
-    var oldDataContent = "";
 
     //Get chat messages from database
     function getChatMessages(){
@@ -58,18 +56,14 @@ $(document).ready( function(){
                 //Check to see if data was received okay
                 if (data.status == 'ok')
                 {
-                    //Make sure that server did not send same request twice
-                    if (data.content != oldDataContent){
-                        oldDataContent = data.content;
-                        //Post the datat to the screen
-                        //1. Get chatwindow element
-                        var chatwindow = document.getElementById('chatwindow');
-                        //2. Save Current Messages
-                        var currentMessages = $(chatwindow).html();
-                        //3. Add new Messages
-                        $(chatwindow).html(currentMessages +  data.content);
-                        scrollDown();
-                    } //Else no changes have been made
+                    //Post the datat to the screen
+                    //1. Get chatwindow element
+                    var chatwindow = document.getElementById('chatwindow');
+                    //2. Save Current Messages
+                    var currentMessages = $(chatwindow).html();
+                    //3. Add new Messages
+                    $(chatwindow).html(currentMessages +  data.content);
+                    scrollDown();
                 }
             }, "json");
     }
@@ -123,10 +117,10 @@ $(document).ready( function(){
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
-    //1. Continue to check for new messages every second
     window.setInterval(function(){
         getChatMessages();
     }, 1000);
+
 
 });
 </script>
