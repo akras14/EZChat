@@ -55,20 +55,86 @@ class Chat extends CI_Controller {
         redirect('login/index');
 
     }
-    
+
     //Changes User Password or Nickname
     public function changeInfo(){ 
 
-        //1. Validate user input
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|matches[passwordConfirm]|alpha_dash');
+        //Validate user input
+        $this->form_validation->set_rules('nickname', 'Nickname', 'trim|xss_clean|alpha_dash');
+        $this->form_validation->set_rules('oldpassword', 'Current Password', 'trim|xss_clean|required|alpha_dash');
+        $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean|matches[passwordConfirm]|alpha_dash');
 
-        if ($this->form_validation->run() == FALSE ) { //If user input is not valid
+        //If user input is not valid
+        if ($this->form_validation->run() == FALSE ) { 
             $this->load->view('template/header');
-            $this->load->view('secure/changePasswordView');
+            $this->load->view('secure/changeInfoView');
         } else {
-            $sha1_password = sha1($this->input->post('password')); //Encryp the password
-            $this->login_model->change_mypassword($sha1_password); //Enter Password into database
-            redirect('login/index');
+            //1. Get user data            
+            $userData = $this->login_model->get_user();
+
+            //2. Encrypt Old Password
+            $sha1_oldpassword = sha1($this->input->post('oldpassword'));
+
+
+            //3. If old password matches -> Process Other Fields 
+            if( $sha1_oldpassword == $userData['password'] ) {
+
+                //If User Wants to Change Password
+                if($this->input->post('password') != NULL) {
+
+                    // Encryp New password
+                    $sha1_password = sha1($this->input->post('password'));
+
+                    //Update Password
+                    $this->login_model->change_mypassword($sha1_password);
+
+                    //Check to make Sure if User wants to Chagne Password AND Update Nickname
+                    if($this->input->post('nickname') != NULL){
+                        //Update Nickname
+                        $this->login_model->change_mynickname( $this->input->post('nickname'));
+                    }
+
+                    // Load chat view TODO update to home page
+                    $data['nickname'] = $this->input->post('nickname');
+                    $data['chatid']=1;
+
+                    $this->load->view('template/header');
+                    $this->load->view('secure/chatview', $data);
+
+                } 
+                // Else check if user want's to change just the nickname
+                else if ($this->input->post('nickname') != NULL){
+                    //Update Nickname
+                    $this->login_model->change_mynickname( $this->input->post('nickname'));
+                    
+                    // Load chat view TODO update to home page
+                    $data['nickname'] = $this->input->post('nickname');
+                    $data['chatid']=1;
+
+                    $this->load->view('template/header');
+                    $this->load->view('secure/chatview', $data);
+
+
+                } 
+                // User didn't submit any data to change -> why submit form than?
+                else {
+
+                    $data['message'] = "Pleae enter data to change or press cancel to return home<br /><br />";
+                    $this->load->view('template/header');
+                    $this->load->view('secure/changeInfoView', $data);
+                } 
+
+            } 
+
+            //4. Else Current Password Didn't Match -> Display Error
+            else {
+
+                //Reload view with custom error message
+                $data['message'] = "Pleae enter valid current password <br /> <br />";
+                $this->load->view('template/header');
+                $this->load->view('secure/changeInfoView', $data);
+
+            }
         }
     }
 

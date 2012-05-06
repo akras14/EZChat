@@ -1,10 +1,5 @@
 </head>
 <body>
-<div id="main">
-<div id="logo"></div>
-<div id="content">
-<div id="rightBar"></div>
-<div id="leftBar"></div>
     <div id="form">
     <h1>Password Recovery</h1>
     <!-- Displays validation errrors -->
@@ -23,7 +18,5 @@
         </div><br />
     </form>
     </div>
-</div>
-</div>
 </body>
 </html>

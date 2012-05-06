@@ -1,10 +1,5 @@
 </head>
 <body>
-<div id="main">
-<div id="logo"></div>
-<div id="content">
-<div id="rightBar"></div>
-<div id="leftBar"></div>
     <h1>Register New Account</h1>
 
     <?php echo validation_errors(); ?>
@@ -31,7 +26,5 @@
 
     <?php echo form_close();?>
     </div>
-</div>
-</div>
 </body>
 </html>

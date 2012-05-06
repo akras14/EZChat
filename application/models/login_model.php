@@ -44,5 +44,13 @@ class Login_model extends CI_Model {
     }
 
 
+    //Receives nickname and updates it for current user
+    public function change_mynickname($nickname) 
+    {
+        //Create SQL query
+        $sql = "UPDATE users SET nickname='" . $nickname ."' WHERE email='" . $this->session->userdata('email') . "'"; 
+        //Execute the query
+        $this->db->query($sql); 
+    }
 }
 ?>

@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
 
 //Get Room ID
@@ -19,9 +19,8 @@ $(document).ready( function(){
 
     //Get chat messages from database
     function getChatMessages(){
-        $.post("<?php echo site_url('chat/ajax_call_getMessages'); ?>", {chatid: chatid},
+        var jqxhr = $.post("<?php echo site_url('chat/ajax_call_getMessages'); ?>", {chatid: chatid},
             function (data){
-
                 //Check to see if data was received okay
                 if (data.status == 'ok')
                 {
@@ -29,7 +28,11 @@ $(document).ready( function(){
                     $(chatwindow).html(data.content);
                     scrollDown();
                 }
-            }, "json");
+
+            }, "json")
+            //.error is for method $.post().error when we get error it refreshes page
+            //This is probably caused by a user in different tab loging out    
+            .error(function () { console.log("errror"); location.reload();});
     }
 
 
@@ -115,7 +118,7 @@ $(document).ready( function(){
 </head>
 <body>
 <a href="<?php echo site_url('chat/logout'); ?>">Log Out</a>&nbsp;&nbsp;&nbsp;
-<a href="<?php echo site_url('chat/changeInfo'); ?>">Change Password</a>
+<a href="<?php echo site_url('chat/changeInfo'); ?>">Change Personal Information</a>
 <h1>EZ Chat!</h1>
 <div id="chatwindow">
 </div>
