@@ -125,7 +125,7 @@ class Login extends CI_Controller {
                 $this->login_model->change_password($sha1_password); //Inser updated password into the database
 
                 //2. Send Temporary Password
-                $this->email->from('admin@ezwebtv.info','Chuck Norris');
+                $this->email->from('admin@ezchat.nfshost.com','Barack Obama');
                 $this->email->to($userData['email']);
                 $this->email->subject('Password Recovery');
                 $this->email->message($password);
