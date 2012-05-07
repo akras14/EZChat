@@ -117,8 +117,8 @@ $(document).ready( function(){
 </style>
 </head>
 <body>
-<a href="<?php echo site_url('chat/logout'); ?>">Log Out</a>&nbsp;&nbsp;&nbsp;
-<a href="<?php echo site_url('chat/changeInfo'); ?>">Change Personal Information</a>
+<a href="<?php echo site_url('secure/logout'); ?>">Log Out</a>&nbsp;&nbsp;&nbsp;
+<a href="<?php echo site_url('secure/index'); ?>">Home</a>
 <h1>EZ Chat!</h1>
 <div id="chatwindow">
 </div>

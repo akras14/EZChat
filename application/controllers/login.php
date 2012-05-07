@@ -51,7 +51,7 @@ class Login extends CI_Controller {
                         'id' => $userData['id']
                     );
                     $this->session->set_userdata($sessoinData);
-                    redirect('chat/index');
+                    redirect('secure/index');
                 } else {
                     $data['message'] = "Invalid Email or Password <br /><br />"; 
                     $this->load->view('template/header');

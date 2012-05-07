@@ -8,7 +8,7 @@
     <?php if (isset($message))  { echo $message;} ?>
     <div id="form">
     <!-- Prepare form header i.e. <form ...>-->
-    <?php echo form_open('chat/changeInfo'); ?>
+    <?php echo form_open('secure/changeInfo'); ?>
 
       <b>New Nickname</b><br />
       <input type="text" name="nickname" value="" size="30" /><br/><br/>
@@ -21,7 +21,7 @@
 
          <div> <input type="submit" value="Update" />
          <input type="button" value="Cancel" onclick="window.location.href='<?php echo site_url("chat")?>'"/></div><br />
-          <a href="<?php echo site_url('chat/logout'); ?>">Log Out</a>    
+          <a href="<?php echo site_url('secure/logout'); ?>">Log Out</a>    
     <?php echo form_close();?>
     </div>
 </body>

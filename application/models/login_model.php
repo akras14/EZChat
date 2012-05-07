@@ -6,7 +6,7 @@ class Login_model extends CI_Model {
     {
         $this->load->database(); //Loads database
     }
-    
+
     //Register's new user
     public function register_user() 
     {
@@ -19,21 +19,21 @@ class Login_model extends CI_Model {
 
         return $this->db->insert('users', $data);
     }
-    
+
     //Gets user's email from form post an returns entire row from users table
     public function get_user() 
     {
         $query = $this->db->get_where('users', array('email' => $this->input->post('email')));
         return $query->row_array();
     }
-    
+
     //Receives password and updates it for user who is traying to retrieve his password
     public function change_password($password) 
     {
         $sql = "UPDATE users SET password='" . $password ."' WHERE email='" . $this->input->post('email') . "'"; //Create SQL query
         $this->db->query($sql); //Execute the query
     }
-    
+
     //Receives password and updates it for user who is traying change his password after sucsefull signin
     public function change_mypassword($password) 
     {
@@ -51,6 +51,34 @@ class Login_model extends CI_Model {
         $sql = "UPDATE users SET nickname='" . $nickname ."' WHERE email='" . $this->session->userdata('email') . "'"; 
         //Execute the query
         $this->db->query($sql); 
+    }
+
+    //Check to see if room with provided name exists
+    public function check_room($newRoomName){
+        $query = $this->db->get_where('chatrooms', array('chat_name' => $newRoomName));
+        return $query->row_array();
+    }
+
+    //Add New Chatroom into the database
+    public function add_room($newRoomName, $userid){
+        //Creates room aray to put into database
+        $data = array( 
+            'chat_name' => $newRoomName,
+            'user_id' => $userid
+        );
+
+        return $this->db->insert('chatrooms', $data);
+    }
+
+    //Get All Available rooms
+    public function get_rooms(){
+        
+        return $this->db->get('chatrooms');
+    }
+
+    //Delete Chat Room
+    public function delete_room($roomid){
+        return $this->db->delete('chatrooms', array('chat_id' => $roomid)); 
     }
 }
 ?>
