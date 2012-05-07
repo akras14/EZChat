@@ -36,24 +36,30 @@ class Secure extends CI_Controller {
         else {
             $userid = $this->session->userdata('id');
             //Populate Chat Room Container
-            $roomhtml ='<div id=\'roomList\'>';
+            $roomhtml ='<h2>List of Rooms</h2><div id=\'roomList\'>';
+            //Populate table to contain list of rooms
+            $roomhtml .= '<table border="1">';
 
             foreach( $allRooms->result() as $oneRoom)
             {
-                $roomhtml .= '<a href=\''. site_url('chat/index'). '/' . $oneRoom->chat_id .'\'>'  . $oneRoom->chat_name . '</a>'; 
+                $roomhtml .= '<tr><td width="200px"><a class=\'roomlink\' href=\''. site_url('chat/index'). '/' 
+                    . $oneRoom->chat_id .'\'>'  . $oneRoom->chat_name . '</a></td>'; 
 
                 //Check if user has created the room and can delete it
                 if ($userid == $oneRoom->user_id){
 
                     //Add Delete Link
-                    $roomhtml .= '&nbsp;&nbsp;&nbsp;<a href=\''. site_url('secure/deleteRoom'). '/' . $oneRoom->chat_id  . '\'>Delete</a>';
+                    $roomhtml .= '<td><a href=\''. site_url('secure/deleteRoom'). '/' 
+                        . $oneRoom->chat_id  . '\'>Delete</a></td></tr>';
                 }
+                //Else add blank table cell
+                else {
+                    $roomhtml .= '<td></td></tr>';
 
-                //Add Break
-                $roomhtml .= '<br />';
+                } 
             }
 
-            $roomhtml .= '</div>';
+            $roomhtml .= '</table></div>';
             $data['container'] = $roomhtml;
 
         }

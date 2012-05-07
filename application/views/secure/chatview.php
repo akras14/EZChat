@@ -100,7 +100,7 @@ $(document).ready( function(){
 <style type="text/css">
 #chatwindow {
     width: 500px;
-    height: 500px;
+    height: 400px;
     border-style:solid;
     padding: 10px;
     overflow: auto;
@@ -120,6 +120,14 @@ $(document).ready( function(){
 <a href="<?php echo site_url('secure/logout'); ?>">Log Out</a>&nbsp;&nbsp;&nbsp;
 <a href="<?php echo site_url('secure/index'); ?>">Home</a>
 <h1>EZ Chat!</h1>
+
+<?php /*Display chat name if set */ 
+if(isset($chatname)) {
+    $str = '<h2>' . $chatname . '</h2>'; 
+    echo $str; 
+}
+?>
+
 <div id="chatwindow">
 </div>
 <div id="chatinput">

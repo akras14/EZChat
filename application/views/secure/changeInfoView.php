@@ -1,5 +1,5 @@
 </head>
-<body>
+<body >
     <h1>Change Personal Info</h1>
     <!-- Displays validation errrors -->
     <?php echo validation_errors(); ?>

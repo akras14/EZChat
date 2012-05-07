@@ -1,5 +1,5 @@
 </head>
-<body>
+<body OnLoad="document.newRoom.roomname.focus();">
     <h1>Add New Room</h1>
     <!-- Displays validation errrors -->
     <?php echo validation_errors(); ?>
@@ -8,7 +8,8 @@
     <?php if (isset($message))  { echo $message;} ?>
     <div id="form">
     <!-- Prepare form header i.e. <form ...>-->
-    <?php echo form_open('secure/createNewRoom'); ?>
+    <?php $formAtributes = array ('name' => 'newRoom');
+        echo form_open('secure/createNewRoom', $formAtributes ); ?>
 
       <b>New Room Name</b><br />
       <input type="text" name="roomname" value="" size="30" /><br/><br/>

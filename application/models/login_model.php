@@ -59,6 +59,11 @@ class Login_model extends CI_Model {
         return $query->row_array();
     }
 
+    //Get's a signle room
+    public function get_a_room($roomid){
+        $query = $this->db->get_where('chatrooms', array('chat_id' => $roomid));
+        return $query->row_array();
+    }
     //Add New Chatroom into the database
     public function add_room($newRoomName, $userid){
         //Creates room aray to put into database
@@ -72,7 +77,7 @@ class Login_model extends CI_Model {
 
     //Get All Available rooms
     public function get_rooms(){
-        
+       $this->db->order_by("chat_name", "asc"); 
         return $this->db->get('chatrooms');
     }
 

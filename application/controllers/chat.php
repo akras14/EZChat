@@ -25,21 +25,40 @@ class Chat extends CI_Controller {
 
         $data['chatid'] = $chatid;
         $data['nickname'] = $this->session->userdata('nickname');
+        //Get Room as array 
+        $room = $this->login_model->get_a_room($chatid);
+
+        //Make sure room name exists
+        if ($room != NULL ){
+            //And set the room variable
+            $data['chatname'] = $room['chat_name']; 
+        } 
+
+        else {
+            //This was a hacker attempt to enter non existing room
+            //Log user out ASAP
+            redirect('secure/logout');
+
+        }
 
         //TODO if needed, I can move this to login area to keep track of converstatinos since login until logout
+            
         //******** Let's Find Out Last Message posted BEFORE user has joined the chat
-        //1. Get all messages
+        //1. Get all messages for that chat room
         $allMessages = $this->chatmodel->getChatMessages($data['chatid'], 0);
         //2. Calculate Number of Rows
         $numberRows = $allMessages->num_rows();
         //3. Get ID for the last Row
         $lastRow = $allMessages->row((int)$numberRows - 1);
         //4. Store that ID in user session
+        
         //Check to make sure database is not empty
-        if ($lastRow != NULL) 
+        if ($lastRow != NULL) {
             $this->session->set_userdata('lastMessageToPost', $lastRow->message_id);
-        else
+        }
+        else {
             $this->session->set_userdata('lastMessageToPost', 0);          
+        }
         //*******Now lastMessageToPost points to first message that the user should see
 
         //Load Default View
