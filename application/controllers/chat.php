@@ -72,6 +72,9 @@ class Chat extends CI_Controller {
         $username = $this->input->post('username');
         $chatid = $this->input->post('chatid');
         $chatmessage = $this->input->post('chatmessage');
+
+        $this->insertRemoteMessages($username, $chatid, $chatmessage);
+
         $this->chatmodel->addChatMessage($username, $chatid, $chatmessage); 
         echo json_encode("Insert Complete " . $username ); //Let front end know that the function was sucessful
     }
@@ -107,4 +110,39 @@ class Chat extends CI_Controller {
         //Send result out
         echo json_encode($result);
     }
+
+
+    /*****************************************************************i*****/    
+    /******************** Remote Access Function Block *********************/
+
+    //Driver to Insert Remote Chat Message
+    private function insertRemoteMessages($username, $chatid, $chatmessage){
+        //Alex Base http://cmpe208alexkras.com/index.php/secure/createNewRoom
+        $allUrls = array ('Alex' => 'http://cmpe208alexkras.com/index.php/backend/insertMessage/');
+        foreach ($allUrls as $url) {
+            $data = array ('username' => $username,
+                'chatid' => $chatid,
+                'chatmessage' => $chatmessage);
+            //open connection
+            $ch = curl_init($url);
+
+            //set the url, number of POST vars, POST data
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            //Debugign Functions
+            //curl_setopt($ch, CURLOPT_HEADER, true); // Display headers
+            //curl_setopt($ch, CURLOPT_VERBOSE, true);
+
+            //execute post
+            $result = curl_exec($ch);
+            //var_dump($result);
+
+            //close connection
+            curl_close($ch);
+        }
+    }
+
+    /****************** End of Remote Function Block ****************************/
 }

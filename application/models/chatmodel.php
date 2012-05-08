@@ -22,7 +22,7 @@ class Chatmodel extends CI_Model {
 
         $queryStr = "SELECT * 
             FROM  `chatmessages` 
-            WHERE chat_id = ?					
+            WHERE chat_id = ?
             AND  message_id > ?
             ORDER BY  `chatmessages`.`message_id` ASC ";
 

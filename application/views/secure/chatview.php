@@ -131,7 +131,7 @@ if(isset($chatname)) {
 <div id="chatwindow">
 </div>
 <div id="chatinput">
-    <input id="chatline" name="chatline" size="50" type="text" value="" />
+    <input id="chatline" name="chatline" size="50" type="text" value="" x-webkit-speech="x-webkit-speech" />
     <input type="button" value="Send" id="sendmessage" /> 
 </div>
 </body>
