@@ -161,6 +161,36 @@ class Secure extends CI_Controller {
 
     }
 
+    
+    /*****************************************************************i*****/    
+    /******************** Remote Access Function Block *********************/
+
+    //Driver to Create Remote Room
+    private function createRemoteRooms($newRoomName){
+        //Alex Base http://cmpe208alexkras.com/index.php/secure/createNewRoom
+        $url = 'http://cmpe208alexkras.com/index.php/backend/createNewRoom/' . $newRoomName ;
+
+        //open connection
+        $ch = curl_init();
+       
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL,$url);
+
+        //Debugign Functions
+        curl_setopt($ch, CURLOPT_HEADER, true); // Display headers
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        
+        //execute post
+        $result = curl_exec($ch);
+        var_dump($result);
+        
+        //close connection
+        curl_close($ch);
+    }
+
+    /****************** End of Remote Function Block ****************************/
+
+
     //Add New Chatroom
     public function createNewRoom(){
 
@@ -187,6 +217,8 @@ class Secure extends CI_Controller {
             if ($result == NULL) {
                 //4. Add New Room
                 $userData = $this->login_model->add_room($newRoomName, $userid);
+                //Add room to remote servers
+                $this->createRemoteRooms($newRoomName );
                 redirect('secure/index');
             }
             //5. Else Let user know that the room name is taken
