@@ -230,7 +230,7 @@ class Secure extends CI_Controller {
             $ch = curl_init();
 
             //set the url, number of POST vars, POST data
-            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch, CURLOPT_URL, $url);
 
             //Debugign Functions
             //curl_setopt($ch, CURLOPT_HEADER, true); // Display headers

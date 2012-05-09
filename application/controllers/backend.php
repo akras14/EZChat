@@ -33,7 +33,7 @@ class Backend extends CI_Controller {
         //1. Remote user = -1 
         $userid = -1;
         //2. New Room Name Passed on as variable
-        
+
         //3. Check that room is not taken (Should Never Happend)
         $result = $this->login_model->check_room($newRoomName);
 
@@ -46,19 +46,22 @@ class Backend extends CI_Controller {
 
         return true;
     }
-    
+
     //Delete a Chatroom from All Sites
     public function deleteRoom($roomid){
-        
+
         //Delete the room
         $result = $this->login_model->delete_room($roomid);
         redirect('secure/index');
     }
-    
-    //Insert Chat Messages into All Sites
-    public function insertMessage($username, $chatid, $chatmessage){
-        $this->chatmodel->addChatMessage($username, $chatid, $chatmessage); 
-    }
 
+    //Insert Chat Messages into All Sites
+    public function insertMessage(){
+        $username = $this->input->post('username');
+        $chatid = $this->input->post('chatid');
+        $chatmessage = $this->input->post('chatmessage');
+
+        $result = $this->chatmodel->addChatMessage($username, $chatid, $chatmessage); 
+    }
 
 }

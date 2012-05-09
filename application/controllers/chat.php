@@ -73,10 +73,13 @@ class Chat extends CI_Controller {
         $chatid = $this->input->post('chatid');
         $chatmessage = $this->input->post('chatmessage');
 
-        $this->insertRemoteMessages($username, $chatid, $chatmessage);
-
+        //1. Insert into local database first
         $this->chatmodel->addChatMessage($username, $chatid, $chatmessage); 
-        echo json_encode("Insert Complete " . $username ); //Let front end know that the function was sucessful
+
+        //2. Insert to all of the other sites
+        $result = $this->insertRemoteMessages($username, $chatid, $chatmessage);
+
+        echo json_encode("Insert Complete " . $username . " Result " . $result); //Let front end know that the function was sucessful
     }
 
     //Gets Called by Ajax Request to Return all Messages for thsi Chat id
@@ -141,6 +144,7 @@ class Chat extends CI_Controller {
 
             //close connection
             curl_close($ch);
+            return $result;
         }
     }
 
