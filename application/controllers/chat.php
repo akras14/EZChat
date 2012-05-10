@@ -35,9 +35,8 @@ class Chat extends CI_Controller {
         } 
 
         else {
-            //This was a hacker attempt to enter non existing room
-            //Log user out ASAP
-            redirect('secure/logout');
+            //This was an attempt to enter not existing room, redirect to list of rooms
+            redirect('secure/index');
 
         }
 

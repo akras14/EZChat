@@ -49,12 +49,12 @@ class Secure extends CI_Controller {
                 if ($userid == $oneRoom->user_id){
 
                     //Add Delete Link
-                    $roomhtml .= '<td><a href=\''. site_url('secure/deleteRoom'). '/' 
+                    $roomhtml .= '<td width="100px"><a href=\''. site_url('secure/deleteRoom'). '/' 
                         . $oneRoom->chat_id  . '\'>Delete</a></td></tr>';
                 }
                 //Else add blank table cell
                 else {
-                    $roomhtml .= '<td></td></tr>';
+                    $roomhtml .= '<td width="100px"></td></tr>';
 
                 } 
             }
@@ -224,24 +224,22 @@ class Secure extends CI_Controller {
         //Alex Base http://cmpe208alexkras.com/index.php/secure/createNewRoom
         $allUrls = array ('Alex' => 'http://cmpe208alexkras.com/index.php/backend/createNewRoom/');
         foreach ($allUrls as $url) {
-            $url .= '' . $newRoomName ;
+            $data = array ('newRoomName' => $newRoomName);
 
             //open connection
-            $ch = curl_init();
+            $ch = curl_init($url);
 
             //set the url, number of POST vars, POST data
-            curl_setopt($ch, CURLOPT_URL, $url);
-
-            //Debugign Functions
-            //curl_setopt($ch, CURLOPT_HEADER, true); // Display headers
-            //curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
             //execute post
             $result = curl_exec($ch);
-            //var_dump($result);
 
             //close connection
             curl_close($ch);
+            return $result;
         }
     }
 
@@ -250,27 +248,23 @@ class Secure extends CI_Controller {
 
         $allUrls = array ('Alex' => 'http://cmpe208alexkras.com/index.php/backend/deleteRoom/');
         foreach ($allUrls as $url) {
-            $url .= '' . $roomid ;
-
+            $data = array ('roomid' => $roomid);
             //open connection
-            $ch = curl_init();
+            $ch = curl_init($url);
 
             //set the url, number of POST vars, POST data
-            curl_setopt($ch,CURLOPT_URL,$url);
-
-            //Debugign Functions
-            //curl_setopt($ch, CURLOPT_HEADER, true); // Display headers
-            //curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
             //execute post
             $result = curl_exec($ch);
-            //var_dump($result);
 
             //close connection
             curl_close($ch);
+            return $result;
         }
     }
-
 
     /****************** End of Remote Function Block ****************************/
 }

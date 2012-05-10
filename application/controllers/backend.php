@@ -21,15 +21,15 @@ class Backend extends CI_Controller {
 
     //**********************************************************************
     //
-    //      Following Functions Should Not be KNOWT to outside users
+    //      Following Functions Should Not be KNOW to outside users
     //      And are being used for php Curl calls to post data to cross 
     //      site databasess
     //
     //*********************************************************************
 
     //Add New Chatroom to All Chats
-    public function createNewRoom($newRoomName){
-
+    public function createNewRoom(){
+        $newRoomName = $this->input->post('newRoomName');
         //1. Remote user = -1 
         $userid = -1;
         //2. New Room Name Passed on as variable
@@ -48,8 +48,8 @@ class Backend extends CI_Controller {
     }
 
     //Delete a Chatroom from All Sites
-    public function deleteRoom($roomid){
-
+    public function deleteRoom(){
+        $roomid = $this->input->post('roomid');
         //Delete the room
         $result = $this->login_model->delete_room($roomid);
         redirect('secure/index');
