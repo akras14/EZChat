@@ -72,6 +72,7 @@ class Chat extends CI_Controller {
         $data['smiley_table'] = $this->table->generate($col_array);
 
         //Load Default View
+        $this->load->view('template/header');
         $this->load->view('secure/chatview', $data);
     }
 

@@ -5,8 +5,6 @@ max-height: 300px;
 overflow: auto;
 }
 </style>
-<html>
-<head>
 </head>
 <body>
 <a href="<?php echo site_url('secure/logout'); ?>">Log Out</a>&nbsp;&nbsp;&nbsp;

@@ -65,6 +65,7 @@ class Secure extends CI_Controller {
         }
 
         //Load Home View
+        $this->load->view('template/header');
         $this->load->view('secure/homeview', $data);
     }
 
