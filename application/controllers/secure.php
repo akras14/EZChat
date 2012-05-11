@@ -221,8 +221,20 @@ class Secure extends CI_Controller {
 
     //Driver to Create Remote Room
     private function createRemoteRooms($newRoomName){
-        //Alex Base http://cmpe208alexkras.com/index.php/secure/createNewRoom
-        $allUrls = array ('Alex' => 'http://cmpe208alexkras.com/index.php/backend/createNewRoom/');
+        
+        //1. Define Sites to Post To
+        $Alex = 'http://cmpe208alexkras.com/';
+            //$Wilson = 'http://wjtsang208.com/';
+            //$Melisa = 'http://';
+            //$Alouise = 'http://';
+        $allUrls = array (
+            'Alex' => ''. $Alex . 'index.php/backend/createNewRoom/'//,
+            //'Alouise' => ''. $Alouise . 'index.php/backend/createNewRoom/',
+            //'Melisa' => '' . $Melisa . 'index.php/backend/createNewRoom/',
+            //'Wilson' => '' . $Wilson . 'index.php/backend/createNewRoom/'       
+        );
+
+        //2. Post data to remote sites
         foreach ($allUrls as $url) {
             $data = array ('newRoomName' => $newRoomName);
 
@@ -246,7 +258,18 @@ class Secure extends CI_Controller {
     //Driver to Remove Remote Rooms
     private Function removeRemoteRooms($roomid){
 
-        $allUrls = array ('Alex' => 'http://cmpe208alexkras.com/index.php/backend/deleteRoom/');
+        //1. Define Sites to Post To
+        $Alex = 'http://cmpe208alexkras.com/';
+            //$Wilson = 'http://wjtsang208.com/';
+            //$Melisa = 'http://';
+            //$Alouise = 'http://';
+        $allUrls = array (
+            'Alex' => ''. $Alex . 'index.php/backend/deleteRoom/'//,
+            //'Alouise' => ''. $Alouise . 'index.php/backend/deleteRoom/',
+            //'Melisa' => '' . $Melisa . 'index.php/backend/deleteRoom/',
+            //'Wilson' => '' . $Wilson . 'index.php/backend/deleteRoom/'       
+        );
+
         foreach ($allUrls as $url) {
             $data = array ('roomid' => $roomid);
             //open connection

@@ -138,13 +138,11 @@ class Chat extends CI_Controller {
             //$Alouise = 'http://';
         $allUrls = array (
             'Alex' => ''. $Alex . 'index.php/backend/insertMessage/'//,
-            //'Alouise' => ''. $Alouise . 'backend/insertMessage/',
-            //'Melisa' => '' . $Melisa . 'backend/insertMessage/',
-            //'Wilson' => '' . $Wilson . 'backend/insertMessage/'       
+            //'Alouise' => ''. $Alouise . 'index.php/backend/insertMessage/',
+            //'Melisa' => '' . $Melisa . 'index.php/backend/insertMessage/',
+            //'Wilson' => '' . $Wilson . 'index.php/backend/insertMessage/'       
         );
 
-        var_dump ($allUrls);
-        
         //2. Post Data to Remote Sites
         foreach ($allUrls as $url) {
             $data = array ('username' => $username,
