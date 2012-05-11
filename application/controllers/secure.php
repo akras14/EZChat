@@ -225,7 +225,7 @@ class Secure extends CI_Controller {
         //1. Define Sites to Post To
         $Alex = 'http://cmpe208alexkras.com/';
             //$Wilson = 'http://wjtsang208.com/';
-            //$Melisa = 'http://';
+            //$Melisa = 'http://mahleesa.com/';
             //$Alouise = 'http://';
         $allUrls = array (
             'Alex' => ''. $Alex . 'index.php/backend/createNewRoom/'//,
@@ -261,7 +261,7 @@ class Secure extends CI_Controller {
         //1. Define Sites to Post To
         $Alex = 'http://cmpe208alexkras.com/';
             //$Wilson = 'http://wjtsang208.com/';
-            //$Melisa = 'http://';
+            //$Melisa = 'http://mahleesa.com/';
             //$Alouise = 'http://';
         $allUrls = array (
             'Alex' => ''. $Alex . 'index.php/backend/deleteRoom/'//,
