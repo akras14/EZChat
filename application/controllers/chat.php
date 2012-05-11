@@ -11,6 +11,8 @@ class Chat extends CI_Controller {
         $this->load->library('session');
         $this->load->library('form_validation');
         $this->load->model('login_model');  
+        $this->load->helper('smiley');
+        $this->load->library('table');
 
         //Make sure user is logged in
         if (!$this->session->userdata('loggedin'))  //Check to see if user is already logged in
@@ -41,7 +43,7 @@ class Chat extends CI_Controller {
         }
 
         //TODO if needed, I can move this to login area to keep track of converstatinos since login until logout
-            
+
         //******** Let's Find Out Last Message posted BEFORE user has joined the chat
         //1. Get all messages for that chat room
         $allMessages = $this->chatmodel->getChatMessages($data['chatid'], 0);
@@ -50,7 +52,7 @@ class Chat extends CI_Controller {
         //3. Get ID for the last Row
         $lastRow = $allMessages->row((int)$numberRows - 1);
         //4. Store that ID in user session
-        
+
         //Check to make sure database is not empty
         if ($lastRow != NULL) {
             $this->session->set_userdata('lastMessageToPost', $lastRow->message_id);
@@ -59,6 +61,15 @@ class Chat extends CI_Controller {
             $this->session->set_userdata('lastMessageToPost', 0);          
         }
         //*******Now lastMessageToPost points to first message that the user should see
+
+
+        //Prepare Smileys 
+
+        $image_array = get_clickable_smileys(base_url() . '/images/smileys/', 'chatline');
+
+        $col_array = $this->table->make_columns($image_array, 20);
+
+        $data['smiley_table'] = $this->table->generate($col_array);
 
         //Load Default View
         $this->load->view('secure/chatview', $data);
@@ -73,7 +84,8 @@ class Chat extends CI_Controller {
         $chatmessage = $this->input->post('chatmessage');
 
         //1. Insert into local database first
-        $this->chatmodel->addChatMessage($username, $chatid, $chatmessage); 
+        $smileymessage = parse_smileys($chatmessage, base_url() . '/images/smileys/', 'chatline');
+        $this->chatmodel->addChatMessage($username, $chatid, $smileymessage); 
 
         //2. Insert to all of the other sites
         $result = $this->insertRemoteMessages($username, $chatid, $chatmessage);
@@ -119,8 +131,21 @@ class Chat extends CI_Controller {
 
     //Driver to Insert Remote Chat Message
     private function insertRemoteMessages($username, $chatid, $chatmessage){
-        //Alex Base http://cmpe208alexkras.com/index.php/secure/createNewRoom
-        $allUrls = array ('Alex' => 'http://cmpe208alexkras.com/index.php/backend/insertMessage/');
+        //1. Define Sites to Post To
+        $Alex = 'http://cmpe208alexkras.com/';
+            //$Wilson = 'http://wjtsang208.com/';
+            //$Melisa = 'http://';
+            //$Alouise = 'http://';
+        $allUrls = array (
+            'Alex' => ''. $Alex . 'index.php/backend/insertMessage/'//,
+            //'Alouise' => ''. $Alouise . 'backend/insertMessage/',
+            //'Melisa' => '' . $Melisa . 'backend/insertMessage/',
+            //'Wilson' => '' . $Wilson . 'backend/insertMessage/'       
+        );
+
+        var_dump ($allUrls);
+        
+        //2. Post Data to Remote Sites
         foreach ($allUrls as $url) {
             $data = array ('username' => $username,
                 'chatid' => $chatid,
@@ -133,16 +158,12 @@ class Chat extends CI_Controller {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            //Debugign Functions
-            //curl_setopt($ch, CURLOPT_HEADER, true); // Display headers
-            //curl_setopt($ch, CURLOPT_VERBOSE, true);
-
             //execute post
             $result = curl_exec($ch);
-            //var_dump($result);
 
             //close connection
             curl_close($ch);
+            $result = $allUrls['Alex'] . $result;
             return $result;
         }
     }

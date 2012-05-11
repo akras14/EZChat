@@ -99,8 +99,8 @@ $(document).ready( function(){
 
 <style type="text/css">
 #chatwindow {
-    width: 500px;
-    height: 400px;
+    width: 514px;
+    height: 300px;
     border-style:solid;
     padding: 10px;
     overflow: auto;
@@ -115,6 +115,9 @@ $(document).ready( function(){
     display: none;
 }
 </style>
+
+<?php echo smiley_js(); ?>
+
 </head>
 <body>
 <a href="<?php echo site_url('secure/logout'); ?>">Log Out</a>&nbsp;&nbsp;&nbsp;
@@ -130,9 +133,14 @@ if(isset($chatname)) {
 
 <div id="chatwindow">
 </div>
+
 <div id="chatinput">
-    <input id="chatline" name="chatline" size="50" type="text" value="" x-webkit-speech="x-webkit-speech" />
+
+    <?php echo $smiley_table; ?>
+<br/>
+    <input id="chatline" name="chatline" size="70" type="text" value="" x-webkit-speech="x-webkit-speech" />
     <input type="button" value="Send" id="sendmessage" /> 
+
 </div>
 </body>
 </html>

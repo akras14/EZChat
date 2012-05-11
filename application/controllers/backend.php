@@ -9,7 +9,8 @@ class Backend extends CI_Controller {
         $this->load->model('chatmodel');
         $this->load->helper('url');
         $this->load->library('session');
-
+        $this->load->helper('smiley');
+        $this->load->library('table');
     }
 
     //Default Function 
@@ -55,13 +56,14 @@ class Backend extends CI_Controller {
         redirect('secure/index');
     }
 
-    //Insert Chat Messages into All Sites
+    //Insert Chat Messages from remote site
     public function insertMessage(){
         $username = $this->input->post('username');
         $chatid = $this->input->post('chatid');
         $chatmessage = $this->input->post('chatmessage');
+        $smileymessage = parse_smileys($chatmessage, base_url() . '/images/smileys/', 'chatline');
 
-        $result = $this->chatmodel->addChatMessage($username, $chatid, $chatmessage); 
+        $result = $this->chatmodel->addChatMessage($username, $chatid, $smileymessage); 
     }
 
 }
