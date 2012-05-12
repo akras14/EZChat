@@ -84,7 +84,7 @@ class Secure extends CI_Controller {
             $this->load->view('secure/changeInfoView');
         } else {
             //1. Get user data            
-            $userData = $this->login_model->get_user();
+            $userData = $this->login_model->get_user_from_session();
 
             //2. Encrypt Old Password
             $sha1_oldpassword = sha1($this->input->post('oldpassword'));
@@ -105,29 +105,23 @@ class Secure extends CI_Controller {
                     //Check to make Sure if User wants to Chagne Password AND Update Nickname
                     if($this->input->post('nickname') != NULL){
                         //Update Nickname
-                        $this->login_model->change_mynickname( $this->input->post('nickname'));
+                        $nickname = $this->input->post('nickname');
+                        $this->session->set_userdata('nickname', $nickname);
+                        $this->login_model->change_mynickname($nickname);
                     }
 
-                    // Load chat view TODO update to home page
-                    $data['nickname'] = $this->input->post('nickname');
-                    $data['chatid']=1;
-
-                    $this->load->view('template/header');
-                    $this->load->view('secure/chatview', $data);
-
+                    //Redirect home
+                    redirect('secure/index');
                 } 
                 // Else check if user want's to change just the nickname
                 else if ($this->input->post('nickname') != NULL){
                     //Update Nickname
                     $this->login_model->change_mynickname( $this->input->post('nickname'));
 
-                    // Load chat view TODO update to home page
-                    $data['nickname'] = $this->input->post('nickname');
-                    $data['chatid']=1;
-
-                    $this->load->view('template/header');
-                    $this->load->view('secure/chatview', $data);
-
+                    $nickname = $this->input->post('nickname');
+                    $this->session->set_userdata('nickname', $nickname);
+                    //Redirect home
+                    redirect('secure/index');
 
                 } 
                 // User didn't submit any data to change -> why submit form than?
@@ -158,6 +152,7 @@ class Secure extends CI_Controller {
             'loggedin' =>  FALSE
         );
         $this->session->set_userdata($sessionData);
+        $this->session->sess_destroy(); 
         redirect('login/index');
 
     }
@@ -222,12 +217,12 @@ class Secure extends CI_Controller {
 
     //Driver to Create Remote Room
     private function createRemoteRooms($newRoomName){
-        
+
         //1. Define Sites to Post To
         $Alex = 'http://cmpe208alexkras.com/';
-            //$Wilson = 'http://wjtsang208.com/';
-            //$Melisa = 'http://mahleesa.com/';
-            //$Alouise = 'http://';
+        //$Wilson = 'http://wjtsang208.com/';
+        //$Melisa = 'http://mahleesa.com/';
+        //$Alouise = 'http://';
         $allUrls = array (
             'Alex' => ''. $Alex . 'index.php/backend/createNewRoom/'//,
             //'Alouise' => ''. $Alouise . 'index.php/backend/createNewRoom/',
@@ -261,9 +256,9 @@ class Secure extends CI_Controller {
 
         //1. Define Sites to Post To
         $Alex = 'http://cmpe208alexkras.com/';
-            //$Wilson = 'http://wjtsang208.com/';
-            //$Melisa = 'http://mahleesa.com/';
-            //$Alouise = 'http://';
+        //$Wilson = 'http://wjtsang208.com/';
+        //$Melisa = 'http://mahleesa.com/';
+        //$Alouise = 'http://';
         $allUrls = array (
             'Alex' => ''. $Alex . 'index.php/backend/deleteRoom/'//,
             //'Alouise' => ''. $Alouise . 'index.php/backend/deleteRoom/',

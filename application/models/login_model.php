@@ -27,6 +27,13 @@ class Login_model extends CI_Model {
         return $query->row_array();
     }
 
+    //Gets user's email from form post an returns entire row from users table
+    public function get_user_from_session() 
+    {
+        $query = $this->db->get_where('users', array('email' => $this->session->userdata('email')));
+        return $query->row_array();
+    }
+
     //Receives password and updates it for user who is traying to retrieve his password
     public function change_password($password) 
     {
