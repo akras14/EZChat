@@ -133,12 +133,12 @@ class Chat extends CI_Controller {
     //Driver to Insert Remote Chat Message
     private function insertRemoteMessages($username, $chatid, $chatmessage){
         //1. Define Sites to Post To
-        $Alex = 'http://cmpe208alexkras.com/';
+        //$Alex = 'http://cmpe208alexkras.com/';
             //$Wilson = 'http://wjtsang208.com/';
             //$Melisa = 'http://mahleesa.com/';
             //$Alouise = 'http://';
         $allUrls = array (
-            'Alex' => ''. $Alex . 'index.php/backend/insertMessage/'//,
+            //'Alex' => ''. $Alex . 'index.php/backend/insertMessage/'//,
             //'Alouise' => ''. $Alouise . 'index.php/backend/insertMessage/',
             //'Melisa' => '' . $Melisa . 'index.php/backend/insertMessage/',
             //'Wilson' => '' . $Wilson . 'index.php/backend/insertMessage/'       

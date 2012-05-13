@@ -219,12 +219,12 @@ class Secure extends CI_Controller {
     private function createRemoteRooms($newRoomName){
 
         //1. Define Sites to Post To
-        $Alex = 'http://cmpe208alexkras.com/';
+        //$Alex = 'http://cmpe208alexkras.com/';
         //$Wilson = 'http://wjtsang208.com/';
         //$Melisa = 'http://mahleesa.com/';
         //$Alouise = 'http://';
         $allUrls = array (
-            'Alex' => ''. $Alex . 'index.php/backend/createNewRoom/'//,
+            //'Alex' => ''. $Alex . 'index.php/backend/createNewRoom/'//,
             //'Alouise' => ''. $Alouise . 'index.php/backend/createNewRoom/',
             //'Melisa' => '' . $Melisa . 'index.php/backend/createNewRoom/',
             //'Wilson' => '' . $Wilson . 'index.php/backend/createNewRoom/'       
@@ -255,12 +255,12 @@ class Secure extends CI_Controller {
     private Function removeRemoteRooms($roomid){
 
         //1. Define Sites to Post To
-        $Alex = 'http://cmpe208alexkras.com/';
+        //$Alex = 'http://cmpe208alexkras.com/';
         //$Wilson = 'http://wjtsang208.com/';
         //$Melisa = 'http://mahleesa.com/';
         //$Alouise = 'http://';
         $allUrls = array (
-            'Alex' => ''. $Alex . 'index.php/backend/deleteRoom/'//,
+            //'Alex' => ''. $Alex . 'index.php/backend/deleteRoom/'//,
             //'Alouise' => ''. $Alouise . 'index.php/backend/deleteRoom/',
             //'Melisa' => '' . $Melisa . 'index.php/backend/deleteRoom/',
             //'Wilson' => '' . $Wilson . 'index.php/backend/deleteRoom/'       

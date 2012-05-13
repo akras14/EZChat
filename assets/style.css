@@ -1,0 +1,95 @@
+/* Based on template by: http://www.templatemo.com */
+
+body {
+
+    margin: 0;
+    padding: 0;
+    color: #8e7555;
+    font-family: sans-serif, "Times New Roman", Times, serif;
+    font-size: 12px;
+    line-height: 1.6em; 
+    letter-spacing: 1px;
+    background-color: #000000;
+    margin: auto;
+
+}
+
+a, a:link, a:visited { color: #770726; font-weight: normal; text-decoration: none }
+
+a:hover { color: #660; text-decoration: underline; }
+
+
+
+a.more { display: block; color: #770726; text-align: center; text-decoration: underline }
+
+a.more span { font-size: 14px; letter-spacing: -3px; }
+
+a.more:hover { color: #660; text-decoration: none }
+
+
+
+
+
+p { margin: 0 0 10px 0; padding: 0; }
+
+img { border: none; }
+
+blockquote { font-style: italic; margin: 0 0 0 10px;}
+
+cite { font-weight: bold; color: #c63a03; }
+
+cite a, cite a:link, cite a:visited  { font-weight: bold; color:#c63a03; }
+
+cite span { font-weight: 400; color: #8e7555; }
+
+em { color: #c63a03; }
+
+
+
+h1, h2, h3, h4, h5, h6 { color: #62260e; font-weight: normal; }
+
+h1 { font-size: 48px; margin: 0 0 30px; padding: 5px 0 }
+
+h2 { font-size: 34px; margin: 0 0 25px; padding: 5px 0; }
+
+h3 { font-size: 24px; margin: 0 0 20px; padding: 0; }
+
+h4 { font-size: 20px; margin: 0 0 15px; padding: 0; }
+
+h5 { font-size: 16px; margin: 0 0 10px; padding: 0;  }
+
+h6 { font-size: 12px; margin: 0 0 5px; padding: 0; }
+
+#header {
+    clear: both;
+    width: 966px;
+    height: 170px;
+    background: url(images/header.png) no-repeat center top
+}
+
+#title { float: left; width: 400px; margin: 100px 0 0 40px; }
+
+#title h1 { margin: 0; padding: 0; font-size: 88px; }
+
+#wrapper {
+    position: relative;
+    width: 966px;
+    margin: 0 auto;
+}
+
+#inner-wrapper {
+}
+
+#main {
+
+    width: 900px;
+    padding: 33px ;
+    background: url(images/main.png) repeat-y
+
+}
+
+#bottom {
+    width: 966px;
+    height: 143px;
+    background: url(images/bottom.png) no-repeat
+}
